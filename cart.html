@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Cart - Mama Moon’s</title>
+  <link rel="stylesheet" href="cleaned-clothes.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #faf8f5;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 1rem;
+    }
+
+    table {
+      margin: 0 auto;
+      border-collapse: collapse;
+      width: 90%;
+      max-width: 800px;
+    }
+
+    th, td {
+      border-bottom: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+
+    img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    button {
+      background-color: #444;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background-color: #666;
+    }
+
+    .total {
+      font-weight: bold;
+      font-size: 1.2rem;
+      text-align: right;
+      padding: 1rem;
+    }
+
+    .actions {
+      margin-top: 1.5rem;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Your Cart</h1>
+  <table id="cart-table">
+    <thead>
+      <tr>
+        <th>Image</th>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+        <th>Remove</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <div class="total" id="cart-total"></div>
+
+  <div class="actions">
+    <button id="clear-cart">Clear Cart</button>
+    <button id="checkout">Save Cart to Database</button>
+  </div>
+
+  <script>
+    function loadCart() {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const tbody = document.querySelector('#cart-table tbody');
+      const totalEl = document.getElementById('cart-total');
+      tbody.innerHTML = '';
+
+      let total = 0;
+      cart.forEach((item, index) => {
+        const subtotal = item.price * item.quantity;
+        total += subtotal;
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td><img src="${item.image}" alt="${item.name}"></td>
+          <td>${item.name}</td>
+          <td>$${item.price.toFixed(2)}</td>
+          <td><input type="number" min="1" value="${item.quantity}" data-index="${index}" class="qty-input"></td>
+          <td>$${subtotal.toFixed(2)}</td>
+          <td><button class="remove-btn" data-index="${index}">X</button></td>
+        `;
+        tbody.appendChild(row);
+      });
+
+      totalEl.textContent = `Total: $${total.toFixed(2)}`;
+    }
+
+    function updateCart() {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      document.querySelectorAll('.qty-input').forEach(input => {
+        const index = input.dataset.index;
+        cart[index].quantity = parseInt(input.value);
+      });
+      localStorage.setItem('cart', JSON.stringify(cart));
+      loadCart();
+    }
+
+    function removeItem(index) {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      cart.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      loadCart();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadCart();
+
+      document.querySelector('#cart-table').addEventListener('change', e => {
+        if (e.target.classList.contains('qty-input')) updateCart();
+      });
+
+      document.querySelector('#cart-table').addEventListener('click', e => {
+        if (e.target.classList.contains('remove-btn')) {
+          const index = e.target.dataset.index;
+          removeItem(index);
+        }
+      });
+
+      document.getElementById('clear-cart').addEventListener('click', () => {
+        localStorage.removeItem('cart');
+        loadCart();
+      });
+
+      document.getElementById('checkout').addEventListener('click', async () => {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        if (cart.length === 0) {
+          alert('Your cart is empty.');
+          return;
+        }
+
+        try {
+          const response = await fetch('save_cart.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(cart)
+          });
+
+          const result = await response.json();
+          alert(result.message || 'Cart saved successfully!');
+        } catch (err) {
+          console.error('Error saving cart:', err);
+          alert('Could not save cart.');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+/* BOX STYLE */
+.product-box {
+  width: 150px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* GRID LAYOUT */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.2rem;
+  justify-items: center;
+  align-items: center;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.product-box {
+  width: 150px;
+  text-align: center;
+  background: rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}

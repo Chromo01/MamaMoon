@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mama Moon | Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Hand-poured candles and curiosities by Mama Moon. Small-batch scents and handmade goods." />
+  <link rel="stylesheet" href="cleaned-clothes.css" />
+</head>
+<body class="landing-page">
+  <div id="header-placeholder"></div>
+
+  <!-- HERO -->
+  <section class="hero-rail">
+    <div class="hero-card border">
+      <div class="hero-copy">
+        <h1>MAMA MOONS<br/>Candles & Curiosities</h1>
+        <p>Small-batch, hand-poured candles and a rotating collection of curios—crafted with care for cozy nights and bright mornings.</p>
+        <div class="cta-row">
+          <a class="btn" href="body.html">Shop Candles</a>
+          <a class="btn ghost" href="search.html">Browse Everything</a>
+        </div>
+      </div>
+      <!-- swap these with your own photos in /images -->
+      <div class="hero-photos">
+        <img src="images/hero_jar.jpg" alt="Vanilla jar candle on a wooden tray"/>
+        <img src="images/hero_roses.jpg" alt="Handmade rose candles"/>
+        <img src="images/hero_mix.jpg" alt="Assorted Mama Moon products"/>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section shell">
+    <div class="two-col">
+      <div class="about-card border">
+        <h2>About Mama Moon</h2>
+        <p>Mama Moon is a local maker focused on clean-burning, great-smelling candles and thoughtfully sourced curios. Every candle is poured in small batches and labeled by hand.</p>
+        <p>Find us at pop-ups and markets around town—or order online and we’ll ship with love.</p>
+      </div>
+      <div class="about-photo border">
+        <img src="images/about_table.jpg" alt="Market table display"/>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED CATEGORIES -->
+  <section class="section shell">
+    <h2 class="section-title">Shop Our Favorites</h2>
+    <div class="cat-grid">
+      <a class="cat-card border" href="body.html?category=candles">
+        <img src="images/crimson_orange.jpg" alt="Assorted candles"/>
+        <div class="cat-info">
+          <strong>🕯️ Candles</strong>
+          <small>Sweet · Spicy · Floral · Holiday</small>
+        </div>
+      </a>
+      <a class="cat-card border" href="body.html?category=bracelets">
+        <img src="images/cat_bracelets.jpg" alt="Bracelets"/>
+        <div class="cat-info">
+          <strong>🧿 Bracelets</strong>
+          <small>Stones · Charms</small>
+        </div>
+      </a>
+      <a class="cat-card border" href="body.html?category=necklaces">
+        <img src="images/cat_necklaces.jpg" alt="Necklaces"/>
+        <div class="cat-info">
+          <strong>📿 Necklaces</strong>
+          <small>Pendants · Chains</small>
+        </div>
+      </a>
+      <a class="cat-card border" href="body.html?category=other">
+        <img src="images/cat_other.jpg" alt="Curios and other items"/>
+        <div class="cat-info">
+          <strong>✨ Other Items</strong>
+          <small>Odds & ends</small>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS (optional) -->
+  <section class="section shell">
+    <h2 class="section-title">What People Say</h2>
+    <div class="quotes-grid">
+      <blockquote class="quote border">“The Lavender scent is my calm place in a jar.” <span>— Jamie</span></blockquote>
+      <blockquote class="quote border">“Clean burn, great throw, zero headache. Obsessed.” <span>— Tasha</span></blockquote>
+      <blockquote class="quote border">“Holiday line? Instant gift list solved.” <span>— Marco</span></blockquote>
+    </div>
+  </section>
+
+  <!-- VISIT / CONTACT -->
+  <section class="section shell">
+    <div class="two-col">
+      <div class="visit-card border">
+        <h2>Visit & Contact</h2>
+        <p><strong>Where to find us:</strong> 650 Pedretti ave Delhi, Ohio</p>
+        <ul class="list">
+          <li>Most days From 2-8pm</li>
+        </ul>
+        <p><strong>Email:</strong> hello@mamamoon.example · <strong>Instagram:</strong> @mamamooncandles</p>
+      </div>
+      <div class="map border" aria-label="Map placeholder">
+        <!-- Replace with an actual Google Maps embed when ready -->
+        <iframe
+          title="Mama Moon Map"
+          src="https://www.google.com/maps?q=650+Pedretti+ave+Delhi+Ohio&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        <span class="map-label">Map or event schedule here</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER CTA -->
+  <section class="section shell footer-cta">
+    <a class="btn wide" href="index.html">Start Shopping</a>
+  </section>
+
+  <script>
+    // Load universal header
+    fetch('header.html').then(r => r.text()).then(html => {
+      document.getElementById('header-placeholder').innerHTML = html;
+    });
+  </script>
+</body>
+</html>

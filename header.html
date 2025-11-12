@@ -1,0 +1,37 @@
+<header class="site-header">
+  <h1 class="site-title">MAMA MOONS Candles And Curiosities</h1>
+  
+  <nav class="navbar">
+    <ul>
+      <li><a href="home.html">Home</a><href></li>
+      <li class="dropdown">
+        <a href="#" id="candles-toggle">Candles</a>
+        <ul class="dropdown-menu hidden">
+          <li><a href="body.html?category=sweet">Sweet</a></li>
+          <li><a href="body.html?category=spicy">Spicy</a></li>
+          <li><a href="body.html?category=holiday">Holiday</a></li>
+          <li><a href="body.html?category=floral">Floral</a></li>
+        </ul>
+      </li>
+
+      <li><a href="body.html?category=bracelets">Bracelets</a></li>
+      <li><a href="body.html?category=necklaces">Necklaces</a></li>
+      <li><a href="body.html?category=other">Other Items</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="header-icons">
+    <button id="cart-button">🛒 <span id="cart-count">0</span></button>
+    <button id="search-toggle">❓</button>
+    <div id="search-bar" class="hidden">
+      <input type="text" id="search-input" placeholder="Search candles...">
+      <button id="search-btn">Go</button>
+    </div>
+    <div id="cart-dropdown" class="cart-dropdown hidden">
+      <ul id="cart-items"></ul>
+      <a href="cart.html" class="view-cart-link">View Full Cart</a>
+    </div>
+  </div>
+</header>

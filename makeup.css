@@ -1,0 +1,50 @@
+h1 {
+    width: 300px;
+    margin: auto;
+    border:5px solid rgba(255, 255, 255, 0.459);
+    color: rgb(255, 255, 255);
+    text-align: center;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+p{
+    margin-top: 35px;
+    margin-left: auto;
+    margin-right: auto;
+    font-style: italic;
+    color: blanchedalmond;
+    text-align: center;
+}
+table{
+    margin-top: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+td{
+    border:3px solid black;
+}
+caption{
+    font-size: x-large;
+    font-weight: bold;
+    color: rgb(236, 123, 240);
+    text-align: center;
+}
+th{
+    font-size: larger;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    color: rgb(238, 160, 238);
+}
+img{
+    width: 150px;
+    max-width: 100%;
+    padding: 25px;
+    vertical-align: middle;
+}
+body{
+    background-image: url(https://wallpapers.com/images/high/aesthetic-purple-background-gjty2znmycy5pf22.webp);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+}

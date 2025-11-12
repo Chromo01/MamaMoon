@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mama Moon Admin Upload</title>
+  <link rel="stylesheet" href="cleaned-clothes.css">
+</head>
+<body>
+  <!-- 🕯 Floating Return Button -->
+  <a href="index.html" class="return-btn">← Return to Shop</a>
+  <div id="header-placeholder"></div>
+
+    <main class="admin-upload">
+      <section class="template-download">
+        <h4>Download Google Sheets Templates</h4>
+        <p>before clicking a link below add your images for each product you're about to add to the database, then use that exact name for the image for the "image_url" column when filling out your template. after that click which ever kind of product you want to add in a spreadsheet and then export as a CSV.</p>
+
+        <ul>
+          <li><a href="https://docs.google.com/spreadsheets/d/1O5OkgypOYO632fGBNisVgDe8Zq8aBx0V9r-7y_3uOtw/edit?gid=0#gid=0" target="_blank">🕯 Candle Template</a></li>
+          <li><a href="https://docs.google.com/spreadsheets/d/1hQUlksuywj8B6EvRdZlGJK7qC-rR11T6Fwcporn5OkI/edit?gid=0#gid=0" target="_blank">📿 Bracelet Template</a></li>
+          <li><a href="https://docs.google.com/spreadsheets/d/1kWrFkW4uceJ5ubYqEDuf6n3aKAv6TJ4-bW0WjKPwr1M/edit?gid=0#gid=0" target="_blank">💎 Necklace Template</a></li>
+          <li><a href="https://docs.google.com/spreadsheets/d/1DIvXY155b3akuU7BdoAOIwPdcKeu6f2-kCzaQRAWFno/edit?gid=0#gid=0" target="_blank">🎁 Other Items Template</a></li>
+        </ul>
+
+        <p><small>→ When you finish editing, go to <strong>File › Download › Comma Separated Values (.csv)</strong>  
+        and upload the file below.</small></p>
+      </section>
+      
+        <main class="admin-upload">
+          <!-- Image uploader -->
+          <section class="upload-section">
+            <h3>Upload Product Image</h3>
+            <form id="imageUploadForm" enctype="multipart/form-data" method="POST" action="upload_image.php">
+              <input type="file" id="imageFile" name="imageFile" accept="image/*" required>
+              <button type="submit">📸 Upload Image</button>
+            </form>
+            <p id="imageUploadMsg"></p>
+          </section>
+
+          <hr>
+
+          <!-- CSV uploader -->
+          <section class="upload-section">
+            <h3>Upload Product Data (CSV)</h3>
+            <form id="csvUploadForm" enctype="multipart/form-data">
+              <select name="table" id="csvTableSelect" required>
+                <option value="">-- Select Category --</option>
+                <option value="candles">Candles</option>
+                <option value="bracelets">Bracelets</option>
+                <option value="necklaces">Necklaces</option>
+                <option value="other_items">Other Items</option>
+              </select>
+
+              <input type="file" name="csvFile" id="csvFile" accept=".csv" required>
+              <button type="submit">📤 Upload CSV</button>
+            </form>
+            <p id="uploadMessage"></p>
+          </section>
+        </main>
+
+      <div class="admin-controls">
+        <select id="viewType">
+          <option value="">-- Select Category to View --</option>
+          <option value="candles">Candles</option>
+          <option value="bracelets">Bracelets</option>
+          <option value="necklaces">Necklaces</option>
+          <option value="other_items">Other Items</option>
+        </select>
+        <button id="viewBtn">👁 View Products</button>
+      </div>
+      <div id="productDisplay" class="product-grid"></div>
+      <button id="deleteBtn" style="background-color:#a82222;">🗑 Delete All in Category</button>
+
+    </main>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const viewBtn = document.getElementById('viewBtn');
+      const viewType = document.getElementById('viewType');
+      const display = document.getElementById('productDisplay');
+
+    viewBtn.addEventListener('click', async () => {
+      const type = viewType.value;
+      if (!type) {
+        alert('Please choose a product category to view.');
+        return;
+      }
+
+      display.innerHTML = '<p>Loading...</p>';
+
+      try {
+        const res = await fetch(`fetch_products.php?table=${type}`);
+        const data = await res.json();
+
+        if (!data.length) {
+          display.innerHTML = '<p>No products found for this category.</p>';
+          return;
+        }
+
+        display.innerHTML = `
+          <table class="admin-table">
+            <tr>
+              <th>Image</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Group</th>
+            </tr>
+          ${data.map(item => `
+            <tr>
+              <td><img src="${item.image_url}" alt="${item.name}" width="80"></td>
+              <td>${item.name}</td>
+              <td>$${Number(item.price).toFixed(2)}</td>
+              <td>${item.scent_group || item.material_group || item.category || ''}</td>
+            </tr>
+          `).join('')}
+        </table>
+      `;
+      } catch (err) {
+        console.error('Error fetching products:', err);
+        display.innerHTML = '<p>Failed to load products.</p>';
+      }
+    });
+  });
+  document.addEventListener('DOMContentLoaded', () => {
+    const viewBtn = document.getElementById('viewBtn');
+    const viewType = document.getElementById('viewType');
+    const deleteBtn = document.getElementById('deleteBtn');
+    const display = document.getElementById('productDisplay');
+
+    // --- View products ---
+    viewBtn.addEventListener('click', async () => {
+      const type = viewType.value;
+      if (!type) {
+        alert('Please choose a product category to view.');
+        return;
+      }
+
+      display.innerHTML = '<p>Loading...</p>';
+
+      try {
+        const res = await fetch(`fetch_products.php?table=${type}`);
+        const data = await res.json();
+
+        if (!data.length) {
+          display.innerHTML = '<p>No products found for this category.</p>';
+          return;
+        }
+
+        display.innerHTML = data.map(item => `
+          <div class="product-box">
+            <img src="${item.image_url}" alt="${item.name}">
+            <p><strong>${item.name}</strong></p>
+            <p>$${Number(item.price).toFixed(2)}</p>
+            <p>${item.scent_group || item.material_group || item.category || ''}</p>
+          </div>
+        `).join('');
+      } catch (err) {
+        console.error('Error fetching products:', err);
+        display.innerHTML = '<p>Failed to load products.</p>';
+      }
+    });
+
+    // --- Delete products in selected category ---
+    deleteBtn.addEventListener('click', async () => {
+      const type = viewType.value;
+      if (!type) {
+        alert('Please choose a category to delete.');
+        return;
+      }
+
+      if (!confirm(`⚠️ Are you sure you want to delete ALL products in ${type}? This cannot be undone.`)) {
+        return;
+      }
+
+      try {
+        const res = await fetch('delete_products.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: `table=${encodeURIComponent(type)}`
+        });
+        const data = await res.text();
+      alert(msg);
+
+        // 🔁 Immediately reload product grid to reflect changes
+        await loadProducts();
+      } catch (err) {
+        console.error('Error deleting products:', err);
+        alert('Failed to delete products.');
+      }
+    });
+    
+      document.getElementById('csvUploadForm').addEventListener('submit', async (e) => {
+          e.preventDefault();
+
+          const form = e.target;
+          const formData = new FormData(form);
+          const uploadMessage = document.getElementById('uploadMessage');
+
+          uploadMessage.textContent = 'Uploading... please wait ⏳';
+
+          try {
+            const res = await fetch('upload_csv.php', {
+              method: 'POST',
+              body: formData
+            });
+
+          const msg = await res.text();
+          uploadMessage.textContent = msg;
+          uploadMessage.style.color = msg.includes('✅') ? 'limegreen' : 'red';
+        } catch (err) {
+          console.error('Upload failed:', err);
+          uploadMessage.textContent = '❌ Upload failed. Please try again.';
+          uploadMessage.style.color = 'red';
+        }
+
+        // Reset the file input
+        form.reset();
+      });
+    });
+    document.getElementById("imageUploadForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const msg = document.getElementById("imageUploadMsg");
+    msg.textContent = "Uploading...";
+    msg.style.color = "white";
+
+    try {
+      const res = await fetch("upload_image.php", {
+        method: "POST",
+        body: new FormData(form)
+      });
+      const text = await res.text();
+      msg.textContent = text;
+      msg.style.color = text.includes("✅") ? "limegreen" : "red";
+    } catch (err) {
+      console.error(err);
+      msg.textContent = "❌ Upload failed.";
+      msg.style.color = "red";
+    }
+
+    form.reset();
+  });
+  </script>
+</body>
+</html>
