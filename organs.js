@@ -15,21 +15,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   // --- Fetch product data ---
   try {
     const response = await fetch('nuerons.php');
+    if (!response.ok) throw new Error('nuerons.php returned '+response.status);
     candles = await response.json();
-    showRelatedProducts();
+    console.log('[MM] Loaded candles:', candles);
+   showRelatedProducts();
   } catch (err) {
-    console.error('Error fetching candle data:', err);
+    console.error('[MM] Error fetching candle data:', err);
   }
-
-  try {
-  const response = await fetch('nuerons.php');
-  if (!response.ok) throw new Error('nuerons.php returned '+response.status);
-  candles = await response.json();
-  console.log('[MM] Loaded candles:', candles);
-  showRelatedProducts();
-} catch (err) {
-  console.error('[MM] Error fetching candle data:', err);
-}
 
   // --- Scent buttons ---
   scentButtons.forEach(button => {
@@ -49,14 +41,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // --- Related Products Bar ---
   function showRelatedProducts(currentName = '') {
-      function showRelatedProducts(currentName = '') {
-        const relatedContainer = document.getElementById('related-container');
-        if (!relatedContainer) { console.warn('[MM] #related-container missing'); return; }
-
-        relatedContainer.innerHTML = '<!-- populated -->'; // quick marker
-        const related = candles.filter(c => c.name?.toLowerCase() !== currentName.toLowerCase());
-        // ... your existing item creation
-      }
     const relatedContainer = document.getElementById('related-container');
     if (!relatedContainer) return;
     relatedContainer.innerHTML = '';
